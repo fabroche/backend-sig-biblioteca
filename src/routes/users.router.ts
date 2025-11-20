@@ -1,19 +1,12 @@
 import {Router} from "express";
-import {prisma} from "@lib/prisma";
+import {UsersService} from "@/services/users.service";
 
 const usersRouter = Router();
+const usersService = new UsersService();
 
 usersRouter.get("/", async (req, res) => {
-    const {name, email} = req.query
-
-    const user = await prisma.user.create({
-        data: {
-            name: String(name),
-            email: String(email),
-        }
-    })
-
-    res.send(user);
+    const users = await usersService.getAllUsers();
+    res.send(users);
 });
 
 
