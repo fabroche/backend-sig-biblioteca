@@ -14,8 +14,38 @@ datasource db {
 }
 
 model User {
-  id    String  @id @default(uuid())
-  email String  @unique
-  name  String?
+  id        String  @id @default(uuid())
+  email     String  @unique
+  password  String
+  name      String?
   avatarUrl String?
+  books     Book[]
+}
+
+model Book {
+  id              String        @id @default(uuid())
+  portada         String
+  title           String        @unique
+  authorId        String
+  author          Author        @relation(fields: [authorId], references: [id])
+  publishedAt     DateTime
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  rating          Float?
+  estadoLecturaId String
+  estadoLectura   EstadoLectura @relation(fields: [estadoLecturaId], references: [id])
+  User            User         @relation(fields: [userId], references: [id])
+  userId          String
+}
+
+model Author {
+  id    String @id @default(uuid())
+  name  String @unique
+  books Book[]
+}
+
+model EstadoLectura {
+  id    String @id @default(uuid())
+  name  String @unique
+  books Book[]
 }
